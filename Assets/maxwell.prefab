@@ -110,9 +110,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.4790365
-  m_Height: 1.6708329
+  m_Height: 1.7241282
   m_Direction: 2
-  m_Center: {x: 0, y: 0.31, z: -0.11979163}
+  m_Center: {x: 0, y: 0.31, z: 0.045039654}
 --- !u!1001 &3647588751560987793
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -147,11 +147,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e5f45012e5651224bba23a784c4968cb, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e5f45012e5651224bba23a784c4968cb, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e5f45012e5651224bba23a784c4968cb, type: 3}
       propertyPath: m_LocalRotation.y
@@ -171,7 +171,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e5f45012e5651224bba23a784c4968cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e5f45012e5651224bba23a784c4968cb, type: 3}
       propertyPath: m_ConstrainProportionsScale

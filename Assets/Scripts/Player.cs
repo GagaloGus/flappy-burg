@@ -4,13 +4,23 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] bool tap = false;
-    public float jumpHeight, maxXRotation;
+    bool tap = false;
+    [Header("Movement")]
+    public float jumpHeight;
+    public float maxXRotation;
+
     Rigidbody rb;
+    Vector3 originalPos;
+
+    [Header("SFXs")]
+    public AudioClip sfxBounce;
+    public AudioClip sfxPoint;
+    public AudioClip sfxDeath;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        originalPos = transform.position;
     }
 
     // Update is called once per frame
@@ -33,15 +43,27 @@ public class Player : MonoBehaviour
         if (tap)
         {
             rb.velocity = new(0, jumpHeight, 0);
+            AudioPlayer.instance.PlaySFX(sfxBounce);
             tap = false;
         }
+
+        transform.position = new(originalPos.x, transform.position.y, originalPos.z);
 
         Tilting();
     }
 
+    private void OnTriggerEnter(Collider collider)
+    {
+        print(collider.gameObject.tag);
+        if (collider.gameObject.CompareTag("tuboTrigger"))
+        {
+            GameManager.instance.AddPoints(1);
+        }
+    }
+
     void Tilting()
     {
-
+        transform.rotation = Quaternion.Euler(CoolFunctions.MapValues(rb.velocity.y, -11, 11, -maxXRotation, maxXRotation), 180, 0);
     }
 
 }
