@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public static class CoolFunctions
 {
@@ -14,5 +15,19 @@ public static class CoolFunctions
         T temp = A;
         B = A;
         A = temp;
+    }
+
+    public static void RemoveDuplicateValues<T>(ref List<T> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            for (int j = 0; j < list.Count; j++)
+            {
+                if(i != j && list[i].Equals(list[j]))
+                {
+                    list.RemoveAt(j);
+                }
+            }
+        }
     }
 }
