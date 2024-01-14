@@ -1,8 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,6 +17,12 @@ public class GameManager : MonoBehaviour
     public bool gamePaused;
 
     public List<int> highScore = new();
+
+    [HideInInspector]
+    public bool playerDied;
+
+    public float transitionDuration;
+    TransicionNegro transicion;
     void Awake()
     {
         if (!instance) //instance  != null  //Detecta que no haya otro GameManager en la escena.
@@ -30,8 +40,12 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         player = FindObjectOfType<Player>().gameObject;
+        transicion = FindObjectOfType<TransicionNegro>();
+        transicion.StartFadeOut(transitionDuration);
+
         player.transform.position = new(0, 0, -4);
         gamePaused = false;
+        playerDied = false;
     }
 
     private void Update()
@@ -45,13 +59,6 @@ public class GameManager : MonoBehaviour
         else { Time.timeScale = 1; }
     }
 
-    public void ChangeScene(string sceneName)
-    {
-        points = 0;
-        gamePaused = false;
-        SceneManager.LoadScene(sceneName);
-    }
-
     public void ResetGame()
     {
         if (!highScore.Contains(points))
@@ -60,11 +67,38 @@ public class GameManager : MonoBehaviour
         }
 
         points = 0;
-        ChangeScene("Game");
+        ChangeSceneTransition("Game");
+    }
+
+    public void ChangeSceneTransition(string sceneName)
+    {
+        transicion.StartFadeIn(transitionDuration);
+        StartCoroutine(WaitChangeScene(sceneName, transitionDuration));
+    }
+    IEnumerator WaitChangeScene(string sceneName, float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        ChangeScene(sceneName);
+    }
+
+    public void ChangeScene(string sceneName)
+    {
+        points = 0;
+        SceneManager.LoadScene(sceneName);
+        gamePaused = false;
+        playerDied = false;
+    }
+
+
+    public void Death()
+    {
+        playerDied = true;
+        ResetGame();
     }
 
     public void AddPoints(int points)
     {
         this.points += points;
     }
+
 }

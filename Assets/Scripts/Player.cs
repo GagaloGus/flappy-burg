@@ -12,14 +12,20 @@ public class Player : MonoBehaviour
     Rigidbody rb;
     Vector3 originalPos;
 
+    [Header("Death")]
+    public Vector3 deathLaunchDir;
+
     [Header("SFXs")]
     public AudioClip sfxBounce;
     public AudioClip sfxPoint;
-    public AudioClip sfxDeath;
+    public AudioClip[] sfxDeath;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        GetComponent<CapsuleCollider>().enabled = true;
+
         originalPos = transform.position;
     }
 
@@ -40,30 +46,71 @@ public class Player : MonoBehaviour
         }
 #endif
 
-        if (tap)
+        if (!GameManager.instance.playerDied) 
         {
-            rb.velocity = new(0, jumpHeight, 0);
-            AudioPlayer.instance.PlaySFX(sfxBounce);
-            tap = false;
+            if (tap)
+            {
+                rb.velocity = new(0, jumpHeight, 0);
+                AudioPlayer.instance.PlaySFX(sfxBounce);
+                tap = false;
+            }
+
+            transform.position = new(originalPos.x, transform.position.y, originalPos.z);
+            Tilting();
         }
 
-        transform.position = new(originalPos.x, transform.position.y, originalPos.z);
+        if(Input.GetKeyDown(KeyCode.D))
+        {
+            Death();
+        }
 
-        Tilting();
     }
 
-    private void OnTriggerEnter(Collider collider)
+    private void OnTriggerEnter(Collider trigger)
     {
-        print(collider.gameObject.tag);
-        if (collider.gameObject.CompareTag("tuboTrigger"))
+        if (trigger.gameObject.CompareTag("tuboTrigger"))
         {
+            AudioPlayer.instance.PlaySFX(sfxPoint);
             GameManager.instance.AddPoints(1);
         }
+
+        if (trigger.gameObject.CompareTag("tuboTubo"))
+        {
+            Death();
+        }
+
+    }
+
+    void Death()
+    {
+        rb.velocity = deathLaunchDir;
+        StartCoroutine(RotateTowards(new(1, 0, 0), 8, 4));
+        GetComponent<CapsuleCollider>().enabled = false;
+
+        int rnd = Random.Range(0, sfxDeath.Length);
+        AudioPlayer.instance.PlaySFX(sfxDeath[rnd]);
+        
+        GameManager.instance.Death();
     }
 
     void Tilting()
     {
         transform.rotation = Quaternion.Euler(CoolFunctions.MapValues(rb.velocity.y, -11, 11, -maxXRotation, maxXRotation), 180, 0);
+    }
+
+    IEnumerator RotateTowards(Vector3 rotateDirection, float turnSpeed, int duration)
+    {
+        Vector3 originalRot = transform.rotation.eulerAngles;
+        for (float i = 0; i < duration; i+= Time.deltaTime*2)
+        {
+            transform.rotation *= Quaternion.Euler(
+                turnSpeed * rotateDirection.normalized.x,
+                turnSpeed * rotateDirection.normalized.y,
+                turnSpeed * rotateDirection.normalized.z);     
+            
+            yield return new WaitForSeconds(Time.deltaTime);
+
+        }
     }
 
 }

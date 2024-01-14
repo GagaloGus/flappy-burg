@@ -17,7 +17,8 @@ public class Tuberias : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rb.velocity = Vector3.forward * speed;
+        if(!GameManager.instance.playerDied) { rb.velocity = Vector3.forward * speed; }
+        else { rb.velocity = Vector3.zero; }
 
         timer += Time.deltaTime;
         if(timer > lifeTime)

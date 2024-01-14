@@ -23,4 +23,9 @@ public class ButtonFunctions : MonoBehaviour
     {
         GameManager.instance.gamePaused = pause;
     }
+
+    public void PlaySoundEffect(AudioClip clip)
+    {
+        AudioPlayer.instance.PlaySFX(clip);
+    }
 }

@@ -33,26 +33,34 @@ public class SpawnerTuberias : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        platInicio.GetComponent<Rigidbody>().velocity = -Vector3.forward * tub_data.speed;
-
-        timer += Time.deltaTime;
-        if (timer > spawnTime)
+        if (!GameManager.instance.playerDied)
         {
-            GameObject tuberia = pool.GetFirstInactiveGameObject();
-            if (tuberia != null)
+            platInicio.GetComponent<Rigidbody>().velocity = -Vector3.forward * tub_data.speed;
+
+            timer += Time.deltaTime;
+            if (timer > spawnTime)
             {
-                tuberia.SetActive(true);
-                Tuberias tubScript = tuberia.GetComponent<Tuberias>();
+                GameObject tuberia = pool.GetFirstInactiveGameObject();
+                if (tuberia != null)
+                {
+                    tuberia.SetActive(true);
+                    Tuberias tubScript = tuberia.GetComponent<Tuberias>();
 
-                tubScript.tub_speed = -tub_data.speed;
-                tubScript.tub_life = tub_data.lifeTime;
+                    tubScript.tub_speed = -tub_data.speed;
+                    tubScript.tub_life = tub_data.lifeTime;
 
-                tuberia.transform.position =
-                    transform.position +
-                    Vector3.up * Random.Range(tub_data.minAndMaxHeight.x, tub_data.minAndMaxHeight.y);
+                    tuberia.transform.position =
+                        transform.position +
+                        Vector3.up * Random.Range(tub_data.minAndMaxHeight.x, tub_data.minAndMaxHeight.y);
+                }
+
+                timer = 0;
             }
-
-            timer = 0;
+        }
+        else
+        {
+            platInicio.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            StopAllCoroutines();
         }
     }
 
