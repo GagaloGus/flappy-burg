@@ -15,14 +15,12 @@ public class GameManager : MonoBehaviour
 
     public int points { get; private set; }
     public bool gamePaused;
+    string sceneToChange = "";
 
     public List<int> highScore = new();
 
     [HideInInspector]
     public bool playerDied;
-
-    public float transitionDuration;
-    TransicionNegro transicion;
     void Awake()
     {
         if (!instance) //instance  != null  //Detecta que no haya otro GameManager en la escena.
@@ -39,11 +37,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        player = FindObjectOfType<Player>().gameObject;
-        transicion = FindObjectOfType<TransicionNegro>();
-        transicion.StartFadeOut(transitionDuration);
+        if(SceneManager.GetActiveScene().name == "Game")
+        {
+            player = FindObjectOfType<Player>().gameObject;
+            player.transform.position = new(0, 0, -4);
+        }
 
-        player.transform.position = new(0, 0, -4);
         gamePaused = false;
         playerDied = false;
     }
@@ -72,19 +71,29 @@ public class GameManager : MonoBehaviour
 
     public void ChangeSceneTransition(string sceneName)
     {
-        transicion.StartFadeIn(transitionDuration);
-        StartCoroutine(WaitChangeScene(sceneName, transitionDuration));
+        gamePaused = false;
+        FindObjectOfType<CanvasController>().FadeIn();
+
+        StartCoroutine(WaitForTransition());
+        sceneToChange = sceneName;
     }
-    IEnumerator WaitChangeScene(string sceneName, float duration)
+
+    IEnumerator WaitForTransition()
     {
-        yield return new WaitForSeconds(duration);
-        ChangeScene(sceneName);
+        yield return new WaitForSeconds(2);
+        ChangeScene();
     }
 
     public void ChangeScene(string sceneName)
     {
+        sceneToChange = sceneName;
+        ChangeScene();
+    }
+
+    public void ChangeScene()
+    {
         points = 0;
-        SceneManager.LoadScene(sceneName);
+        SceneManager.LoadScene(sceneToChange);
         gamePaused = false;
         playerDied = false;
     }

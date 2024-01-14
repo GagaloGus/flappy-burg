@@ -9,36 +9,39 @@ public class TransicionNegro : MonoBehaviour
     private void Awake()
     {
         image = GetComponent<Image>();
+        gameObject.SetActive(true);
     }
 
-    public void StartFadeIn(float duration)
+    public void StartFadeIn()
     {
         StopAllCoroutines();
-        StartCoroutine(Fade(true, duration));
+        StartCoroutine(Fade(true));
     }
-    public void StartFadeOut(float duration)
+    public void StartFadeOut()
     {
         StopAllCoroutines();
-        StartCoroutine(Fade(false, duration));
+        StartCoroutine(Fade(false));
     }
 
-    IEnumerator Fade(bool fadeIn, float duration)
+    IEnumerator Fade(bool fadeIn)
     {
         if(fadeIn)
         {
-            for (float i = 0; i < 1; i+= Time.deltaTime) 
+            for (float i = 0; i <= 1; i+= Time.deltaTime) 
             {
                 image.color = new(0, 0, 0, i);
-                yield return new WaitForSeconds(Time.deltaTime * duration);
+                yield return new WaitForSeconds(Time.deltaTime);
             }
         }
         else
         {
-            for (float i = 1; i > 0; i -= Time.deltaTime)
+            for (float i = 1; i >= 0; i -= Time.deltaTime)
             {
                 image.color = new(0, 0, 0, i);
-                yield return new WaitForSeconds(Time.deltaTime * duration);
+                yield return new WaitForSeconds(Time.deltaTime);
             }
+            gameObject.SetActive(false);
         }
+
     }
 }

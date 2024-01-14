@@ -6,7 +6,7 @@ public class ButtonFunctions : MonoBehaviour
 {
     public void ChangeScene(string sceneName)
     {
-        GameManager.instance.ChangeScene(sceneName);
+        GameManager.instance.ChangeSceneTransition(sceneName);
     }
 
     public void ResetGame()
