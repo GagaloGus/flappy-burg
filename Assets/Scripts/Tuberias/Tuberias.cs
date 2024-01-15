@@ -7,11 +7,15 @@ public class Tuberias : MonoBehaviour
     float speed, lifeTime;
     float timer;
     Rigidbody rb;
+
+    BoxCollider pointBCol;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         timer = 0;
+        pointBCol = transform.Find("detectot").GetComponent<BoxCollider>();
+        pointBCol.enabled = true;
     }
 
     // Update is called once per frame
@@ -23,6 +27,7 @@ public class Tuberias : MonoBehaviour
         timer += Time.deltaTime;
         if(timer > lifeTime)
         {
+            pointBCol.enabled = true;
             timer = 0;
             gameObject.SetActive(false);
         }

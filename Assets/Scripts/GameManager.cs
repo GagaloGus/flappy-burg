@@ -17,6 +17,10 @@ public class GameManager : MonoBehaviour
     public bool gamePaused;
     string sceneToChange = "";
 
+    [SerializeField]
+    int deathCount;
+    int randomDeathCount;
+
     public List<int> highScore = new();
 
     [HideInInspector]
@@ -45,6 +49,8 @@ public class GameManager : MonoBehaviour
 
         gamePaused = false;
         playerDied = false;
+
+        randomDeathCount = UnityEngine.Random.Range(3, 6);
     }
 
     private void Update()
@@ -56,6 +62,13 @@ public class GameManager : MonoBehaviour
 
         if (gamePaused) { Time.timeScale = 0; }
         else { Time.timeScale = 1; }
+    }
+
+    public void Death()
+    {
+        playerDied = true;
+        deathCount++;
+        ResetGame();
     }
 
     public void ResetGame()
@@ -81,7 +94,18 @@ public class GameManager : MonoBehaviour
     IEnumerator WaitForTransition()
     {
         yield return new WaitForSeconds(2);
-        ChangeScene();
+        if (deathCount >= randomDeathCount)
+        {
+            deathCount = 0;
+            randomDeathCount = UnityEngine.Random.Range(3, 6);
+            FindObjectOfType<InterstitialAd>().ShowAd();
+            gamePaused = true;
+        }
+        else
+        {
+            ChangeScene();
+        }
+        
     }
 
     public void ChangeScene(string sceneName)
@@ -96,13 +120,6 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(sceneToChange);
         gamePaused = false;
         playerDied = false;
-    }
-
-
-    public void Death()
-    {
-        playerDied = true;
-        ResetGame();
     }
 
     public void AddPoints(int points)

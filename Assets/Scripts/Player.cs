@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField]
     bool tap = false;
     [Header("Movement")]
     public float jumpHeight;
@@ -70,6 +71,7 @@ public class Player : MonoBehaviour
     {
         if (trigger.gameObject.CompareTag("tuboTrigger"))
         {
+            trigger.gameObject.GetComponent<BoxCollider>().enabled = false;
             AudioPlayer.instance.PlaySFX(sfxPoint);
             GameManager.instance.AddPoints(1);
         }
@@ -111,6 +113,11 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(Time.deltaTime);
 
         }
+    }
+
+    public bool player_tapped
+    {
+        get { return tap; }
     }
 
 }

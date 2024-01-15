@@ -9,7 +9,6 @@ public class TransicionNegro : MonoBehaviour
     private void Awake()
     {
         image = GetComponent<Image>();
-        gameObject.SetActive(true);
     }
 
     public void StartFadeIn()
@@ -25,6 +24,7 @@ public class TransicionNegro : MonoBehaviour
 
     IEnumerator Fade(bool fadeIn)
     {
+        //print($"fade {(fadeIn ? "in" : "out") }");
         if(fadeIn)
         {
             for (float i = 0; i <= 1; i+= Time.deltaTime) 
