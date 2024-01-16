@@ -15,9 +15,10 @@ public class SpawnerTuberias : MonoBehaviour
     public GameObject platInicio;
 
     [Header("Tuberias")]
-    public uint spawnTime;
+    public float spawnTime;
     float timer;
     public TuberiaData tub_data;
+    public Texture2D[] textures;
 
     [Header("Pool")]
     public GameObject tuberia;
@@ -26,19 +27,22 @@ public class SpawnerTuberias : MonoBehaviour
     void Start()
     {
         timer = spawnTime;
+        spawnTime = Mathf.Abs(spawnTime);
         platInicio.SetActive(true);
-        StartCoroutine(DespawnStartPlatform(15));
+        StartCoroutine(DespawnStartPlatform(8));
     }
 
     // Update is called once per frame
     void Update()
     {
+        float spawnTimeMapped = CoolFunctions.MapValues(GameManager.instance.points, 0, 20, spawnTime, spawnTime / 2);
+
         if (!GameManager.instance.playerDied)
         {
-            platInicio.GetComponent<Rigidbody>().velocity = -Vector3.forward * tub_data.speed;
+            platInicio.GetComponent<Rigidbody>().velocity = -Vector3.forward * tub_data.speed * GameManager.instance.gameSpeed;
 
-            timer += Time.deltaTime;
-            if (timer > spawnTime)
+            timer += Time.deltaTime * GameManager.instance.gameSpeed;
+            if (timer > spawnTimeMapped)
             {
                 GameObject tuberia = pool.GetFirstInactiveGameObject();
                 if (tuberia != null)
@@ -52,6 +56,13 @@ public class SpawnerTuberias : MonoBehaviour
                     tuberia.transform.position =
                         transform.position +
                         Vector3.up * Random.Range(tub_data.minAndMaxHeight.x, tub_data.minAndMaxHeight.y);
+
+                    Material matArriba = tuberia.transform.Find("tubo arriba").GetComponent<MeshRenderer>().material;
+                    Material matAbajo = tuberia.transform.Find("tubo abajo").GetComponent<MeshRenderer>().material;
+                    int rndTexture = Random.Range(0, textures.Length);
+
+                    matArriba.SetTexture("_MainTex", textures[rndTexture]);
+                    matAbajo.SetTexture("_MainTex", textures[rndTexture]);
                 }
 
                 timer = 0;
@@ -62,6 +73,7 @@ public class SpawnerTuberias : MonoBehaviour
             platInicio.GetComponent<Rigidbody>().velocity = Vector3.zero;
             StopAllCoroutines();
         }
+
     }
 
     IEnumerator DespawnStartPlatform(int seconds)

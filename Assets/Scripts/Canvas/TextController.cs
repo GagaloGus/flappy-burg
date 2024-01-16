@@ -13,7 +13,7 @@ public class TextController : MonoBehaviour
         Top3.Sort(); Top3.Reverse();
 
         highscoreText.text = 
-            $"highscore" +
+            $"h-score" +
             $"\n1.{(Top3.Count <= 0 ? "" : Top3[0])}" +
             $"\n2.{(Top3.Count <= 1 ? "" : Top3[1])}" +
             $"\n3.{(Top3.Count <= 2 ? "" : Top3[2])}";

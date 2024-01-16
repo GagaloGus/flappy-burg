@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     [Header("Movement")]
     public float jumpHeight;
     public float maxXRotation;
+    public float gravity;
 
     Rigidbody rb;
     Vector3 originalPos;
@@ -20,12 +21,14 @@ public class Player : MonoBehaviour
     public AudioClip sfxBounce;
     public AudioClip sfxPoint;
     public AudioClip[] sfxDeath;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
 
         GetComponent<CapsuleCollider>().enabled = true;
+        gravity = GetComponent<ConstantForce>().force.y;
 
         originalPos = transform.position;
     }
@@ -36,28 +39,23 @@ public class Player : MonoBehaviour
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
 
         if(Input.GetKeyDown(KeyCode.Space))
-        { tap = true; }
+        { Tap(); }
 
 #elif UNITY_ANDROID
 
         foreach (Touch touch in Input.touches)
         {
             if (touch.phase == TouchPhase.Began)
-            { tap = true; }
+            { Tap(); }
         }
 #endif
 
         if (!GameManager.instance.playerDied) 
         {
-            if (tap)
-            {
-                rb.velocity = new(0, jumpHeight, 0);
-                AudioPlayer.instance.PlaySFX(sfxBounce);
-                tap = false;
-            }
-
             transform.position = new(originalPos.x, transform.position.y, originalPos.z);
             Tilting();
+            rb.velocity *= GameManager.instance.gameSpeed;
+            GetComponent<ConstantForce>().force *= GameManager.instance.gameSpeed;
         }
 
         if(Input.GetKeyDown(KeyCode.D))
@@ -65,6 +63,17 @@ public class Player : MonoBehaviour
             Death();
         }
 
+        
+
+    }
+
+    void Tap()
+    {
+        if (!GameManager.instance.playerDied)
+        {
+            rb.velocity = new Vector3(0, jumpHeight, 0) * GameManager.instance.gameSpeed;
+            AudioPlayer.instance.PlaySFX(sfxBounce);
+        }
     }
 
     private void OnTriggerEnter(Collider trigger)

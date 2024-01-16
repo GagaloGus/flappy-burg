@@ -28,4 +28,9 @@ public class ButtonFunctions : MonoBehaviour
     {
         AudioPlayer.instance.PlaySFX(clip);
     }
+
+    public void Disable()
+    {
+        GameManager.instance.Disable();
+    }
 }

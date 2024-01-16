@@ -29,7 +29,7 @@ public class GuiaSalto : MonoBehaviour
     IEnumerator FadeOut(float duration)
     {
         yield return new WaitForSeconds(duration);
-        for(float i = 1; i > 0; i-= Time.deltaTime)
+        for(float i = 1; i >= 0; i-= Time.deltaTime)
         {
             image.color = new(1, 1, 1, i);
             yield return new WaitForSeconds(0.01f);
