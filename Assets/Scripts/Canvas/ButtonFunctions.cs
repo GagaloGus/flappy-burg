@@ -16,6 +16,7 @@ public class ButtonFunctions : MonoBehaviour
 
     public void Quit()
     {
+        GameManager.instance.Save();
         Application.Quit();
     }
 

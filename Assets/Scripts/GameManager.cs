@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadInStartup()
     {
-        highScore = JSONFileManager.instance.Load(filename);
+        highScore = JSONFileManager.Load(filename);
 
         CoolFunctions.RemoveDuplicateValues(ref highScore); 
     }
@@ -150,10 +150,10 @@ public class GameManager : MonoBehaviour
         disable = true;
     }
 
-    void Save()
+    public void Save()
     {
 
-        JSONFileManager.instance.Save(filename, highScore);
+        JSONFileManager.Save(filename, highScore);
     }
 
     private void OnApplicationQuit()

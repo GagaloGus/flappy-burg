@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 119ec07f1c7ed204db46bd8465fd5a50, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
+  m_IndirectSpecularColor: {r: 0.35674572, g: 0.5576068, b: 0.59265345, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1364,7 +1364,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectToPool: {fileID: 6905035844232846477, guid: a78992850e53b214485800607af88ba9, type: 3}
   size: 15
-  shouldExpand: 0
+  shouldExpand: 1
 --- !u!4 &808522804
 Transform:
   m_ObjectHideFlags: 0
@@ -2022,6 +2022,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   platInicio: {fileID: 200770656}
   spawnTime: 1.79
+  margin: 2
   tub_data:
     speed: 4
     lifeTime: 8
@@ -2320,8 +2321,8 @@ RectTransform:
   m_GameObject: {fileID: 1140974166}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.06, y: 1.06, z: 1.06}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1540231095}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2408,7 +2409,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.92280257, b: 0.7122642, a: 1}
+  m_Color: {r: 0.9339623, g: 0.9339623, b: 0.9339623, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -2551,7 +2552,7 @@ MonoBehaviour:
   deathCount: 0
   highScore: 
   playerDied: 0
-  filename: 
+  filename: data
 --- !u!4 &1351252828
 Transform:
   m_ObjectHideFlags: 0

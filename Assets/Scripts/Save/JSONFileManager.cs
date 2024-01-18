@@ -4,16 +4,15 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using UnityEngine;
 
-public class JSONFileManager : MonoBehaviour
+public static class JSONFileManager
 {
-    public static JSONFileManager instance = new();
-    string filepath = $"{Application.persistentDataPath}";
+    static readonly string filepath = $"{Application.persistentDataPath}";
     struct Info
     {
         public List<int> highscores;
     }
 
-    public List<int> Load(string filename)
+    public static List<int> Load(string filename)
     {
         string file = Path.Combine(filepath, filename + ".json");
         if (File.Exists(file))
@@ -21,21 +20,21 @@ public class JSONFileManager : MonoBehaviour
             StreamReader strRead = new StreamReader(file);
             string jsonFile = strRead.ReadToEnd();
 
-            Info info = JsonUtility.FromJson<Info>(file);
+            Info info = JsonUtility.FromJson<Info>(jsonFile);
 
             List<int> result = info.highscores;
 
-            print("File Loaded");
+            Debug.Log("File Loaded");
             return result;
 
         }
         else { throw new System.Exception("No json savefile"); }
     }
 
-    public void Save(string filename, List<int> content)
+    public static void Save(string filename, List<int> content)
     {
         string file = Path.Combine(filepath, filename + ".json");
-        StreamWriter strWriter = new StreamWriter(filepath);
+        StreamWriter strWriter = new StreamWriter(file);
 
         Info info = new Info();
 
@@ -46,6 +45,6 @@ public class JSONFileManager : MonoBehaviour
 
         strWriter.Close();
 
-        print("File Saved");
+        Debug.Log("File Saved");
     }
 }

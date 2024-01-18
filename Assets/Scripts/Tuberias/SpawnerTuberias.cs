@@ -17,6 +17,8 @@ public class SpawnerTuberias : MonoBehaviour
     [Header("Tuberias")]
     public float spawnTime;
     float timer;
+    public float margin;
+
     public TuberiaData tub_data;
     public Texture2D[] textures;
 
@@ -35,7 +37,11 @@ public class SpawnerTuberias : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float spawnTimeMapped = CoolFunctions.MapValues(GameManager.instance.points, 0, 20, spawnTime, spawnTime / 2);
+
+
+        float spawnTimeMapped = (GameManager.instance.points <= 20 ? CoolFunctions.MapValues(GameManager.instance.points, 0, 20, spawnTime, spawnTime / 1.5f) : spawnTime / 1.5f);
+
+        float relativeHeight = 0;
 
         if (!GameManager.instance.playerDied)
         {
@@ -53,9 +59,18 @@ public class SpawnerTuberias : MonoBehaviour
                     tubScript.tub_speed = -tub_data.speed;
                     tubScript.tub_life = tub_data.lifeTime;
 
+                    float tubHeight;
+
+                    do { 
+                        tubHeight = Random.Range(tub_data.minAndMaxHeight.x, tub_data.minAndMaxHeight.y); 
+                    }
+                    while (Mathf.Abs(relativeHeight - tubHeight) > margin);
+                    
+                    relativeHeight = tubHeight;
+
                     tuberia.transform.position =
                         transform.position +
-                        Vector3.up * Random.Range(tub_data.minAndMaxHeight.x, tub_data.minAndMaxHeight.y);
+                        Vector3.up * tubHeight;
 
                     Material matArriba = tuberia.transform.Find("tubo arriba").GetComponent<MeshRenderer>().material;
                     Material matAbajo = tuberia.transform.Find("tubo abajo").GetComponent<MeshRenderer>().material;
