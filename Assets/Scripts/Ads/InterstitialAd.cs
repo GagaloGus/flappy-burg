@@ -13,13 +13,6 @@ public class InterstitialAd : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSho
 
         LoadAd();
     }
-
-    public void LoadAd()
-    {
-        Debug.Log("Loading Ad: " + _adUnitId);
-        Advertisement.Load(_adUnitId, this);
-    }
-
     public void ShowAd()
     {
         Debug.Log("Showing Ad: " + _adUnitId);
@@ -27,6 +20,13 @@ public class InterstitialAd : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSho
 
         LoadAd();
     }
+
+    public void LoadAd()
+    {
+        Debug.Log("Loading Ad: " + _adUnitId);
+        Advertisement.Load(_adUnitId, this);
+    }
+
 
     public void OnUnityAdsAdLoaded(string adUnitId) { }
 
@@ -42,6 +42,8 @@ public class InterstitialAd : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSho
 
     public void OnUnityAdsShowStart(string adUnitId) { }
     public void OnUnityAdsShowClick(string adUnitId) { }
+
+    //Cuando se acabe o skip el anuncio se carga la escena de nuevo
     public void OnUnityAdsShowComplete(string adUnitId, UnityAdsShowCompletionState showCompletionState) 
     {
         GameManager.instance.gamePaused = false;

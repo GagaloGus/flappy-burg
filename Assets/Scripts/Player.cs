@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]
-    bool tap = false;
     [Header("Movement")]
     public float jumpHeight;
     public float maxXRotation;
-    public float gravity;
 
     Rigidbody rb;
     Vector3 originalPos;
@@ -28,8 +25,8 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         GetComponent<CapsuleCollider>().enabled = true;
-        gravity = GetComponent<ConstantForce>().force.y;
 
+        //coje la posicion inicial al empezar el juego
         originalPos = transform.position;
     }
 
@@ -49,42 +46,39 @@ public class Player : MonoBehaviour
             { Tap(); }
         }
 #endif
-
+        //Si no estamos muertos
         if (!GameManager.instance.playerDied) 
         {
+            //Ajusta la posicion X y Z a la misma para que el player no se mueva en esos ejes
             transform.position = new(originalPos.x, transform.position.y, originalPos.z);
             Tilting();
+
             rb.velocity *= GameManager.instance.gameSpeed;
             GetComponent<ConstantForce>().force *= GameManager.instance.gameSpeed;
         }
-
-        if(Input.GetKeyDown(KeyCode.D))
-        {
-            Death();
-        }
-
-        
-
     }
 
     void Tap()
     {
-        if (!GameManager.instance.playerDied)
+        //Si no estamos muertos, lanza al player hacia arriba
+        if (!GameManager.instance.playerDied && GameManager.instance.gameSpeed != 0)
         {
-            rb.velocity = new Vector3(0, jumpHeight, 0) * GameManager.instance.gameSpeed;
-            AudioPlayer.instance.PlaySFX(sfxBounce);
+            rb.velocity = Vector3.up * jumpHeight * GameManager.instance.gameSpeed;
+            AudioPlayer.instance.PlaySFX(sfxBounce, 0.8f);
         }
     }
 
     private void OnTriggerEnter(Collider trigger)
     {
+        //Si toca el trigger de puntos
         if (trigger.gameObject.CompareTag("tuboTrigger"))
         {
             trigger.gameObject.GetComponent<BoxCollider>().enabled = false;
-            AudioPlayer.instance.PlaySFX(sfxPoint);
+            AudioPlayer.instance.PlaySFX(sfxPoint, 0.25f);
             GameManager.instance.AddPoints(1);
         }
 
+        //Si toca el trigger de muerte
         if (trigger.gameObject.CompareTag("tuboTubo"))
         {
             Death();
@@ -94,10 +88,16 @@ public class Player : MonoBehaviour
 
     void Death()
     {
+        //Lanza al player hacia atras y arriba
         rb.velocity = deathLaunchDir;
+
+        //Rota
         StartCoroutine(RotateTowards(new(1, 0, 0), 8, 4));
+
+        //Desactiva su collider
         GetComponent<CapsuleCollider>().enabled = false;
 
+        //Reproduce un sfx de muerte aleatorio
         int rnd = Random.Range(0, sfxDeath.Length);
         AudioPlayer.instance.PlaySFX(sfxDeath[rnd]);
         
@@ -106,12 +106,13 @@ public class Player : MonoBehaviour
 
     void Tilting()
     {
+        //Rota al player en el eje Y segun su velocidad en Y
         transform.rotation = Quaternion.Euler(CoolFunctions.MapValues(rb.velocity.y, -11, 11, -maxXRotation, maxXRotation), 180, 0);
     }
 
     IEnumerator RotateTowards(Vector3 rotateDirection, float turnSpeed, int duration)
     {
-        Vector3 originalRot = transform.rotation.eulerAngles;
+        //Rota hacia una direccion
         for (float i = 0; i < duration; i+= Time.deltaTime*2)
         {
             transform.rotation *= Quaternion.Euler(
@@ -123,10 +124,4 @@ public class Player : MonoBehaviour
 
         }
     }
-
-    public bool player_tapped
-    {
-        get { return tap; }
-    }
-
 }

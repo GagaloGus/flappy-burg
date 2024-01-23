@@ -14,6 +14,7 @@ public static class JSONFileManager
 
     public static List<int> Load(string filename)
     {
+        //Guarda la lista de puntaje
         string file = Path.Combine(filepath, filename + ".json");
         if (File.Exists(file))
         {
@@ -33,12 +34,14 @@ public static class JSONFileManager
 
     public static void Save(string filename, List<int> content)
     {
+        //Carga la lista de puntaje
         string file = Path.Combine(filepath, filename + ".json");
         StreamWriter strWriter = new StreamWriter(file);
 
-        Info info = new Info();
-
-        info.highscores = content;
+        Info info = new Info
+        {
+            highscores = content
+        };
 
         string jsonInfo = JsonUtility.ToJson(info);
         strWriter.WriteLine(jsonInfo);

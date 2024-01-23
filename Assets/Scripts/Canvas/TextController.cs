@@ -12,6 +12,7 @@ public class TextController : MonoBehaviour
         List<int> Top3 = GameManager.instance.highScore;
         Top3.Sort(); Top3.Reverse();
 
+        //Si no hay puntuacion en 1, 2 o 3 no escribe nada en su respectiva posicion
         highscoreText.text = 
             $"h-score" +
             $"\n1.{(Top3.Count <= 0 ? "" : Top3[0])}" +

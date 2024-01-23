@@ -17,6 +17,7 @@ public static class CoolFunctions
         A = temp;
     }
 
+    //Quita los valores duplicados de las listas
     public static void RemoveDuplicateValues<T>(ref List<T> list)
     {
         for (int i = 0; i < list.Count; i++)

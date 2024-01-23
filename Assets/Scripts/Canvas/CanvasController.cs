@@ -5,7 +5,8 @@ using UnityEngine;
 public class CanvasController : MonoBehaviour
 {
     public TransicionNegro transicion;
-    // Start is called before the first frame update
+    
+    //Solo sirve como transicio`n
     void Start()
     {
         transicion.gameObject.SetActive(true);

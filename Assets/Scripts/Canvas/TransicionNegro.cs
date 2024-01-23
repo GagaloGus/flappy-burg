@@ -24,7 +24,7 @@ public class TransicionNegro : MonoBehaviour
 
     IEnumerator Fade(bool fadeIn)
     {
-        //print($"fade {(fadeIn ? "in" : "out") }");
+        //Hace un fade in o fade out para hacer transiciones
         if(fadeIn)
         {
             for (float i = 0; i <= 1; i+= Time.deltaTime) 

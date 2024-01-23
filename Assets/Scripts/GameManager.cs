@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        //coje al player y pone su posicion en la de inicio si estamos en el juego
         if(SceneManager.GetActiveScene().name == "Game")
         {
             player = FindObjectOfType<Player>().gameObject;
@@ -53,11 +54,11 @@ public class GameManager : MonoBehaviour
         gamePaused = false;
         playerDied = false;
 
+        //randomiza la cantidad de veces que nos tenemos que morir para que salga un ad
         randomDeathCount = UnityEngine.Random.Range(3, 6);
 
         try { LoadInStartup(); }
-        catch { print("No JSON save file to load"); }
-        
+        catch { print("No JSON save file to load"); }    
     }
 
     public void LoadInStartup()
@@ -69,20 +70,14 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && SceneManager.GetActiveScene().name != "Menu")
-        {
-            gamePaused = !gamePaused;
-        }
-
         if (gamePaused) { Time.timeScale = 0; }
         else { Time.timeScale = 1; }
-
-        if (Input.GetKeyDown(KeyCode.G)) { Save(); }
     }
 
     public void Death()
     {
         playerDied = true;
+        //añade 1 al contador de muertes
         deathCount++;
         ResetGame();
     }
@@ -101,15 +96,16 @@ public class GameManager : MonoBehaviour
     {
         gamePaused = false;
         gameSpeed = 0;
-        FindObjectOfType<CanvasController>().FadeIn();
-
-        StartCoroutine(WaitForTransition());
         sceneToChange = sceneName;
+        
+        FindObjectOfType<CanvasController>().FadeIn();
+        //Espera 2 segundos (lo que dura la transicion) para cambiar de escena
+        Invoke(nameof(AdCheck), 2);
     }
 
-    IEnumerator WaitForTransition()
+
+    void AdCheck()
     {
-        yield return new WaitForSeconds(2);
         if (deathCount >= randomDeathCount && !disable)
         {
             deathCount = 0;
@@ -123,12 +119,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //hacemos una sobrecarga del mismo void que admita el nombre de la escena, por si acaso
     public void ChangeScene(string sceneName)
     {
         sceneToChange = sceneName;
         ChangeScene();
     }
 
+    //Ajusta todos los parametros para que se cargue la escena correctamente
     public void ChangeScene()
     {
         bool temp = disable;
@@ -138,6 +136,17 @@ public class GameManager : MonoBehaviour
         gameSpeed = 1;
         gamePaused = false;
         playerDied = false;
+
+        //Si cambiamos la escena a game y el audioplayer no esta reproduciendo nada, reproduce la cancioncita del juego
+        if(sceneToChange == "Game" && !AudioPlayer.instance.musicSource.isPlaying)
+        {
+            AudioPlayer.instance.PlayMusic("juego", 1f);
+        }
+        //Si cambiamos al menu paramos todos los sonidos
+        else if(sceneToChange == "Menu")
+        {
+            AudioPlayer.instance.StopAllSounds();
+        }
     }
 
     public void AddPoints(int points)

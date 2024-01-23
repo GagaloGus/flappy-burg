@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5133928081266866950}
   - component: {fileID: 2272669422035289707}
   - component: {fileID: 7227724868444735165}
+  - component: {fileID: 683026063555691370}
   m_Layer: 0
   m_Name: maxwell
   m_TagString: Untagged
@@ -61,7 +62,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 106
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &5133928081266866950
 MonoBehaviour:
@@ -75,9 +76,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 015921d32841cd24e94c70e4dc850184, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tap: 0
-  jumpHeight: 11
+  jumpHeight: 9
   maxXRotation: 30
+  gravity: 0
+  deathLaunchDir: {x: 0, y: 12.09, z: -2.99}
+  sfxBounce: {fileID: 8300000, guid: d130a9c2c519a2d4ca20d1672d990711, type: 3}
+  sfxPoint: {fileID: 8300000, guid: 81e5e87db8e52904eb0848671b49a734, type: 3}
+  sfxDeath:
+  - {fileID: 8300000, guid: 9c0c2125eb9c401468269b1b20e85ac6, type: 3}
+  - {fileID: 8300000, guid: 935f46db45bc4be49b5354277db94569, type: 3}
+  - {fileID: 8300000, guid: fc86b70c5ba14914099095ba813a4389, type: 3}
 --- !u!75 &2272669422035289707
 ConstantForce:
   m_ObjectHideFlags: 0
@@ -86,7 +94,7 @@ ConstantForce:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2725014406058772803}
   m_Enabled: 1
-  m_Force: {x: 0, y: -40, z: 0}
+  m_Force: {x: 0, y: -30, z: 0}
   m_RelativeForce: {x: 0, y: 0, z: 0}
   m_Torque: {x: 0, y: 0, z: 0}
   m_RelativeTorque: {x: 0, y: 0, z: 0}
@@ -109,10 +117,31 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.4790365
-  m_Height: 1.7241282
+  m_Radius: 0.3884266
+  m_Height: 1.4964728
   m_Direction: 2
-  m_Center: {x: 0, y: 0.31, z: 0.045039654}
+  m_Center: {x: 0, y: 0.29837245, z: 0.08453059}
+--- !u!95 &683026063555691370
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2725014406058772803}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &3647588751560987793
 PrefabInstance:
   m_ObjectHideFlags: 0

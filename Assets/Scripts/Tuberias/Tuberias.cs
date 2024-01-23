@@ -14,6 +14,8 @@ public class Tuberias : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         timer = 0;
+
+        //Pone en true el trigger que suma puntos
         pointBCol = transform.Find("detectot").GetComponent<BoxCollider>();
         pointBCol.enabled = true;
     }
@@ -21,12 +23,14 @@ public class Tuberias : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Si nos morimos las tuberias paran
         if(!GameManager.instance.playerDied) { rb.velocity = Vector3.forward * speed * GameManager.instance.gameSpeed; }
         else { rb.velocity = Vector3.zero; }
 
         timer += Time.deltaTime;
         if(timer > lifeTime)
         {
+            //Pone en true el trigger que suma puntos
             pointBCol.enabled = true;
             timer = 0;
             gameObject.SetActive(false);

@@ -1198,6 +1198,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 0}
   sfxSource: {fileID: 0}
+  musicThemes:
+  - name: juego
+    clip: {fileID: 8300000, guid: f7d7564c7c6188d4c8c2f12f1b39c80d, type: 3}
 --- !u!4 &845900344
 Transform:
   m_ObjectHideFlags: 0
@@ -1602,7 +1605,7 @@ MonoBehaviour:
         m_MethodName: PlaySoundEffect
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 9acfc062930bf3a478cedf47bdd455e8, type: 3}
+          m_ObjectArgument: {fileID: 8300000, guid: aaf0602d6c1b0ee478d769c5bac7eb75, type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0

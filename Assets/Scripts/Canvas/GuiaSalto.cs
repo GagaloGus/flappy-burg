@@ -16,18 +16,19 @@ public class GuiaSalto : MonoBehaviour
         image = GetComponent<Image>();
         player = FindObjectOfType<Player>().gameObject;
 
+        //Si estamos en pc carga una imagen, si estamos en movil carga otra
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         image.sprite = sprites[0];
 #elif UNITY_ANDROID
         image.sprite = sprites[1];
 #endif
-
         StartCoroutine(FadeOut(duration));
     }
 
 
     IEnumerator FadeOut(float duration)
     {
+        //Desaparece a unos cuantos segundos
         yield return new WaitForSeconds(duration);
         for(float i = 1; i >= 0; i-= Time.deltaTime)
         {
