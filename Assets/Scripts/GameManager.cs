@@ -18,8 +18,8 @@ public class GameManager : MonoBehaviour
     public bool gamePaused;
     string sceneToChange = "";
 
-    [SerializeField]
-    int deathCount;
+    [SerializeField] int deathCount;
+    [SerializeField] Vector2Int deathCountMinMax;
     int randomDeathCount;
 
     public List<int> highScore = new();
@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
         playerDied = false;
 
         //randomiza la cantidad de veces que nos tenemos que morir para que salga un ad
-        randomDeathCount = UnityEngine.Random.Range(3, 6);
+        randomDeathCount = UnityEngine.Random.Range(deathCountMinMax.x, deathCountMinMax.y);
 
         try { LoadInStartup(); }
         catch { print("No JSON save file to load"); }    
@@ -109,8 +109,8 @@ public class GameManager : MonoBehaviour
         if (deathCount >= randomDeathCount && !disable)
         {
             deathCount = 0;
-            randomDeathCount = UnityEngine.Random.Range(3, 6);
-            FindObjectOfType<InterstitialAd>().ShowAd();
+            randomDeathCount = UnityEngine.Random.Range(deathCountMinMax.x, deathCountMinMax.y);
+            FindObjectOfType<AdManager>().ShowAd();
             gamePaused = true;
         }
         else
